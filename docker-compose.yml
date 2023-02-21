@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  web:
+    build: .
+    command: bundle exec ruby app.rb -o 0.0.0.0
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/usr/src/app
+#    depends_on:
+#      - db
+    environment:
+      - RACK_ENV=development
+
+#  db:
+#    image: postgres
+#    ports:
+#      - 3306:3306
+#    volumes:
+#      - postgres_volume:/var/lib/postgresql/data
+#    environment:
+#      POSTGRES_HOST_AUTH_METHOD: 'trust'
+#
+#volumes:
+#  postgres_volume:
