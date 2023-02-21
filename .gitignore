@@ -127,3 +127,6 @@ yarn-debug.log*
 
 # JetBrains
 .idea
+
+# .DS_Store
+.DS_Store
