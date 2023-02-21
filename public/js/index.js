@@ -1,16 +1,13 @@
-function PostRequest(path) {
-    var request = new XMLHttpRequest();
-    request.open("POST", path, false);
-    request.send(null);
-
-    if (request.status !== 200) {
-        alert("Error: " + request.status);
-    }
-}
-
 function Bravo() {
+    // Button Analytics を呼び出す
+    ButtonAnalytics("bravo");
+
+    // Click 時に発火するイベントを記述
     PostRequest("/api/bravo");
 }
 function NotBravo() {
+    // Button Analytics を呼び出す
+    ButtonAnalytics("not_bravo");
+    // Click 時に発火するイベントを記述
     PostRequest("/api/not-bravo");
 }
