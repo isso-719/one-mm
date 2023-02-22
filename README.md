@@ -33,6 +33,12 @@ service_account=$(gcloud iam service-accounts list --project $proj --filter="dis
 gcloud iam service-accounts keys create ./credentials.json --iam-account $service_account
 ```
 
+`.env` ファイルを作成し、以下のように環境変数を設定します。
+
+```bash
+REALTIME_DATABASE_URI=https://lit-grad-2023-default-rtdb.firebaseio.com/
+```
+
 - 起動
 ```bash
 make run
