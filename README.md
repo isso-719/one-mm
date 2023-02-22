@@ -8,7 +8,9 @@ Docker-compose で動かす。インストールしてない場合は[ここ](ht
 
 - 起動前準備
 
-起動前に `./credentials` に Google サービスアカウントの Credentials JSON を配置する。
+まず、本 Web アプリケーションは [Datastore モードの Cloud Firestore](https://console.cloud.google.com/datastore) を使用するため、有効にします。
+
+次に `./credentials` に Google サービスアカウントの Credentials JSON を配置する。
 
 ```bash
 proj=google-cloud-project-id
@@ -54,8 +56,8 @@ proj=google-cloud-project-id
 gcloud auth login
 gcloud config set project $proj
 
-# Cloud Run と Cloud Build と Datastore を有効化
-gcloud services enable run.googleapis.com cloudbuild.googleapis.com datastore.googleapis.com
+# Cloud Run と Cloud Build を有効化
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com
 
 make deploy
 ```
