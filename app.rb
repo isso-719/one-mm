@@ -1,22 +1,23 @@
 require 'bundler/setup'
 Bundler.require
+Dotenv.load
 require 'sinatra/reloader' if development?
 require 'faye/websocket'
 require 'json'
+require './src/datastore'
 # TODO: SpreadSheets API の使用
 # require 'google/apis/sheets_v4'
-require './src/datastore'
 
 set :server, 'puma'
 set :bind, '0.0.0.0'
 set :port, ENV['PORT'] || 8080
 set :sockets, []
 
-datastore = datastore()
+datastore = DatastoreClient.new
 
 # もし Datastore に Counts という名前のエンティティがなければ作成
-if get_counts(datastore).nil?
-  init_counts(datastore)
+if datastore.get_counts.nil?
+  datastore.init_counts
 end
 
 # 全てのルートに CORS 対応
@@ -36,7 +37,7 @@ end
 
 # WebSocket でメッセージを送信するためのメソッド
 def send_counts(datastore)
-  bravo_count, not_bravo_count = get_bravo_count_not_bravo_count(datastore)
+  bravo_count, not_bravo_count = datastore.get_bravo_count_not_bravo_count
   settings.sockets.each do |s|
     s.send(
       {
@@ -50,14 +51,14 @@ end
 
 # ブラボーボタン送信先
 post '/api/bravo' do
-  increment_count(datastore, "bravo")
+  datastore.increment_count("bravo")
   send_counts(datastore)
   status 200
 end
 
 # Not ブラボーボタン送信先
 post '/api/not-bravo' do
-  increment_count(datastore, "not_bravo")
+  datastore.increment_count("not_bravo")
   send_counts(datastore)
 
   status 200
@@ -65,7 +66,7 @@ end
 
 # 運営リセットボタン送信先
 post '/api/reset' do
-  reset_counts
+  datastore.reset_counts
   send_counts(datastore)
 
   status 200

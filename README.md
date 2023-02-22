@@ -23,20 +23,10 @@ gcloud projects add-iam-policy-binding $proj --member serviceAccount:one-mm@$pro
 gcloud iam service-accounts keys create ./credentials.json --iam-account one-mm@$proj.iam.gserviceaccount.com
 ```
 
-```bash
-proj=google-cloud-project-id
-
-# gcloud コマンドで Firebase Admin SDK のサービスアカウントを取得
-service_account=$(gcloud iam service-accounts list --project $proj --filter="displayName:firebase-adminsdk" --format="value(email)")
-
-# サービスアカウントの Credentials JSON を ./credentials/credentials.json ダウンロード
-gcloud iam service-accounts keys create ./credentials.json --iam-account $service_account
-```
-
 `.env` ファイルを作成し、以下のように環境変数を設定します。
 
 ```bash
-REALTIME_DATABASE_URI=https://lit-grad-2023-default-rtdb.firebaseio.com/
+GOOGLE_APPLICATION_CREDENTIALS=./credentials.json
 ```
 
 - 起動
@@ -63,6 +53,9 @@ proj=google-cloud-project-id
 
 gcloud auth login
 gcloud config set project $proj
+
+# Cloud Run と Cloud Build と Datastore を有効化
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com datastore.googleapis.com
 
 make deploy
 ```
