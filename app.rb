@@ -5,16 +5,18 @@ require 'faye/websocket'
 require 'json'
 # TODO: SpreadSheets API の使用
 # require 'google/apis/sheets_v4'
-# require './src/datastore'
+require './src/datastore'
 
 set :server, 'puma'
 set :bind, '0.0.0.0'
 set :port, ENV['PORT'] || 8080
 set :sockets, []
 
+datastore = datastore()
+
 # もし Datastore に Counts という名前のエンティティがなければ作成
-if get_counts.nil?
-  init_counts
+if get_counts(datastore).nil?
+  init_counts(datastore)
 end
 
 # 全てのルートに CORS 対応
@@ -33,8 +35,8 @@ get '/result' do
 end
 
 # WebSocket でメッセージを送信するためのメソッド
-def send_counts()
-  bravo_count, not_bravo_count = get_bravo_count_not_bravo_count
+def send_counts(datastore)
+  bravo_count, not_bravo_count = get_bravo_count_not_bravo_count(datastore)
   settings.sockets.each do |s|
     s.send(
       {
@@ -48,15 +50,15 @@ end
 
 # ブラボーボタン送信先
 post '/api/bravo' do
-  increment_count("bravo")
-  send_counts
+  increment_count(datastore, "bravo")
+  send_counts(datastore)
   status 200
 end
 
 # Not ブラボーボタン送信先
 post '/api/not-bravo' do
-  increment_count("not_bravo")
-  send_counts
+  increment_count(datastore, "not_bravo")
+  send_counts(datastore)
 
   status 200
 end
@@ -64,7 +66,7 @@ end
 # 運営リセットボタン送信先
 post '/api/reset' do
   reset_counts
-  send_counts
+  send_counts(datastore)
 
   status 200
 end
@@ -76,7 +78,7 @@ get '/websocket/counts' do
 
     ws.on :open do |event|
       settings.sockets << ws
-      send_counts
+      send_counts(datastore)
     end
 
     ws.on :close do |event|
