@@ -130,3 +130,6 @@ yarn-debug.log*
 
 # .DS_Store
 .DS_Store
+
+# Google Cledentials JSON Key
+credentials.json

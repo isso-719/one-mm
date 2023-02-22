@@ -11,6 +11,7 @@ services:
 #      - db
     environment:
       - RACK_ENV=development
+      - GOOGLE_APPLICATION_CREDENTIALS=./credentials.json
 
 #  db:
 #    image: postgres

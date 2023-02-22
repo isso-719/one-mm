@@ -5,18 +5,17 @@ require 'faye/websocket'
 require 'json'
 # TODO: SpreadSheets API の使用
 # require 'google/apis/sheets_v4'
-
-# .env ファイルから環境変数を読み込む
-Dotenv.load
+# require './src/datastore'
 
 set :server, 'puma'
 set :bind, '0.0.0.0'
 set :port, ENV['PORT'] || 8080
 set :sockets, []
 
-# 投票数
-$bravo = 0      # ブラボーボタンの投票数
-$not_bravo = 0  # Not ブラボーボタンの投票数
+# もし Datastore に Counts という名前のエンティティがなければ作成
+if get_counts.nil?
+  init_counts
+end
 
 # 全てのルートに CORS 対応
 before do
@@ -34,12 +33,13 @@ get '/result' do
 end
 
 # WebSocket でメッセージを送信するためのメソッド
-def send_counts
+def send_counts()
+  bravo_count, not_bravo_count = get_bravo_count_not_bravo_count
   settings.sockets.each do |s|
     s.send(
       {
-        bravo: $bravo,
-        not_bravo: $not_bravo
+        bravo: bravo_count,
+        not_bravo: not_bravo_count,
       }.to_json
     )
   end
@@ -48,15 +48,14 @@ end
 
 # ブラボーボタン送信先
 post '/api/bravo' do
-  $bravo += 1
+  increment_count("bravo")
   send_counts
-
   status 200
 end
 
 # Not ブラボーボタン送信先
 post '/api/not-bravo' do
-  $not_bravo += 1
+  increment_count("not_bravo")
   send_counts
 
   status 200
@@ -64,8 +63,7 @@ end
 
 # 運営リセットボタン送信先
 post '/api/reset' do
-  $bravo = 0
-  $not_bravo = 0
+  reset_counts
   send_counts
 
   status 200
