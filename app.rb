@@ -2,16 +2,13 @@ require 'bundler/setup'
 Bundler.require
 Dotenv.load
 require 'sinatra/reloader' if development?
-require 'faye/websocket'
 require 'json'
 require './src/datastore'
 # TODO: SpreadSheets API の使用
 # require 'google/apis/sheets_v4'
 
-set :server, 'puma'
 set :bind, '0.0.0.0'
 set :port, ENV['PORT'] || 8080
-set :sockets, []
 
 datastore = DatastoreClient.new
 
@@ -35,59 +32,27 @@ get '/result' do
   erb :result
 end
 
-# WebSocket でメッセージを送信するためのメソッド
-def send_counts(datastore)
+# ブラボー数を Fetch するためのエンドポイント
+get '/api/fetch' do
+  content_type :json
   bravo_count, not_bravo_count = datastore.get_bravo_count_not_bravo_count
-  settings.sockets.each do |s|
-    s.send(
-      {
-        bravo: bravo_count,
-        not_bravo: not_bravo_count,
-      }.to_json
-    )
-  end
+  { bravo: bravo_count, not_bravo: not_bravo_count }.to_json
 end
-
 
 # ブラボーボタン送信先
 post '/api/bravo' do
   datastore.increment_count("bravo")
-  send_counts(datastore)
   status 200
 end
 
 # Not ブラボーボタン送信先
 post '/api/not-bravo' do
   datastore.increment_count("not_bravo")
-  send_counts(datastore)
-
   status 200
 end
 
 # 運営リセットボタン送信先
 post '/api/reset' do
   datastore.reset_counts
-  send_counts(datastore)
-
   status 200
-end
-
-# ブラボーボタンの投票数を取得する WebSocket エンドポイント
-get '/websocket/counts' do
-  if Faye::WebSocket.websocket?(request.env)
-    ws = Faye::WebSocket.new(request.env)
-
-    ws.on :open do |event|
-      settings.sockets << ws
-      send_counts(datastore)
-    end
-
-    ws.on :close do |event|
-      settings.sockets.delete(ws)
-    end
-
-    ws.rack_response
-  else
-    status 400
-  end
 end
