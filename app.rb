@@ -17,6 +17,23 @@ if datastore.get_counts.nil?
   datastore.init_counts
 end
 
+# Basic 認証
+helpers do
+  def protect!
+    unless authorized?
+      response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
+      throw(:halt, [401, "Not authorized\n"])
+    end
+  end
+  def authorized?
+    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+    # 本来であれば環境変数で管理だが、遊び用なのでベタ書きで良い
+    username = "admin"
+    password = "password"
+    @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [username, password]
+  end
+end
+
 # 全てのルートに CORS 対応
 before do
   response.headers['Access-Control-Allow-Origin'] = '*'
@@ -34,6 +51,7 @@ end
 
 # 運営用画面
 get '/admin' do
+  protect!
   erb :admin
 end
 
@@ -58,7 +76,6 @@ end
 
 # ブラボーボタン送信先
 post '/api/bravo' do
-
   if datastore.get_enabled
     datastore.increment_count("bravo")
   end
