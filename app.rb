@@ -32,6 +32,11 @@ get '/result' do
   erb :result
 end
 
+# 運営用画面
+get '/admin' do
+  erb :admin
+end
+
 # ブラボー数を Fetch するためのエンドポイント
 get '/api/fetch' do
   content_type :json
@@ -39,15 +44,32 @@ get '/api/fetch' do
   { bravo: bravo_count, not_bravo: not_bravo_count }.to_json
 end
 
+# カウントを有効化するためのエンドポイント
+post '/api/count-enable' do
+  datastore.set_enabled(true)
+  status 200
+end
+
+# カウントを無効化するためのエンドポイント
+post '/api/count-disable' do
+  datastore.set_enabled(false)
+  status 200
+end
+
 # ブラボーボタン送信先
 post '/api/bravo' do
-  datastore.increment_count("bravo")
+
+  if datastore.get_enabled
+    datastore.increment_count("bravo")
+  end
   status 200
 end
 
 # Not ブラボーボタン送信先
 post '/api/not-bravo' do
-  datastore.increment_count("not_bravo")
+  if datastore.get_enabled
+    datastore.increment_count("not_bravo")
+  end
   status 200
 end
 

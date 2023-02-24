@@ -10,10 +10,22 @@ class DatastoreClient
 
   def init_counts
     entity = @datastore.entity "Counts" do |t|
+      t["is_enabled"] = false
       t["bravo"] = 0
       t["not_bravo"] = 0
     end
     @datastore.save entity
+  end
+
+  def get_enabled
+    query = @datastore.query("Counts")
+    return @datastore.run(query).first["is_enabled"]
+  end
+
+  def set_enabled(enabled)
+    counts = get_counts
+    counts["is_enabled"] = enabled
+    @datastore.save counts
   end
 
   def get_counts

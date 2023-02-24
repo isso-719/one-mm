@@ -1,5 +1,5 @@
 window.onload = function() {
-    // ブラボー数を 0.25 秒ごとに更新
+    // ブラボー数を 0.1 秒ごとに更新
     setInterval(function() {
         req = GetRequest("/api/fetch");
         var data = JSON.parse(req);
@@ -15,13 +15,5 @@ window.onload = function() {
         document.getElementById('not-bravo-count').innerHTML = not_bravo;
         document.getElementById('bravo-percentage').innerHTML = Math.round(bravo / total * 100) + '%';
         document.getElementById('not-bravo-percentage').innerHTML = Math.round(not_bravo / total * 100) + '%';
-    }, 250);
-}
-
-function Reset() {
-    // Button Analytics を呼び出す
-    ButtonAnalytics("bravo");
-
-    // Click 時に発火するイベントを記述
-    PostRequest("/api/reset");
+    }, 100);
 }
