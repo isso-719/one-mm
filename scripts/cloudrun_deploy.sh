@@ -4,4 +4,5 @@
 gcloud run deploy one-mm \
   --no-cpu-throttling \
   --region=asia-northeast1 \
-  --source=.
+  --source=. \
+  --update-env-vars GOOGLE_APP_SCRIPT_DEPLOY_URL=$1

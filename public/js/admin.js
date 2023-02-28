@@ -1,15 +1,36 @@
 function Reset() {
     // Button Analytics を呼び出す
-    ButtonAnalytics("bravo");
+    ButtonAnalytics("reset");
 
-    // Click 時に発火するイベントを記述
-    PostRequest("/api/reset");
+    PostRequest("/api/reset", null);
 }
 
 function Enable() {
-    PostRequest("/api/count-enable");
+    // Button Analytics を呼び出す
+    ButtonAnalytics("enable");
+
+    PostRequest("/api/count-enable", null);
 }
 
 function Disable() {
-    PostRequest("/api/count-disable");
+    // Button Analytics を呼び出す
+    ButtonAnalytics("disable");
+
+    PostRequest("/api/count-disable", null);
+}
+
+function SaveSpreadSheet() {
+    // Button Analytics を呼び出す
+    ButtonAnalytics("save_spreadsheet");
+
+    let mentor_name = document.getElementById('mentor-name').value;
+    PostRequest("/api/save", "mentor_name=" + mentor_name);
+
+    document.getElementById('mentor-name').value = "";
+
+    // 3 秒だけ save-success し、フェードアウトする
+    document.getElementById('save-success').style.display = "block";
+    setTimeout(function() {
+        document.getElementById('save-success').style.display = "none";
+    }, 3000);
 }

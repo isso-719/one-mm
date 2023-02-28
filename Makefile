@@ -32,4 +32,4 @@ bundle:
 
 .PHONY: deploy
 deploy:
-	sh scripts/cloudrun_deploy.sh
+	sh scripts/cloudrun_deploy.sh ${GOOGLE_APP_SCRIPT_DEPLOY_URL}

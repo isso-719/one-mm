@@ -1,6 +1,7 @@
 version: '3.9'
 services:
   web:
+    platform: linux/x86_64
     build: .
     command: bundle exec ruby app.rb -o 0.0.0.0
     ports:

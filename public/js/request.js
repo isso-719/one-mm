@@ -1,5 +1,5 @@
 function GetRequest(path) {
-    var request = new XMLHttpRequest();
+    let request = new XMLHttpRequest();
     request.open("GET", path, false);
     request.send(null);
 
@@ -10,10 +10,16 @@ function GetRequest(path) {
     return request.responseText;
 }
 
-function PostRequest(path) {
-    var request = new XMLHttpRequest();
-    request.open("POST", path, false);
-    request.send(null);
+function PostRequest(path, data) {
+    let request = new XMLHttpRequest();
+    if (data === null) {
+        request.open("POST", path, false);
+        request.send(null);
+    } else {
+        request.open("POST", path, false);
+        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        request.send(data);
+    }
 
     if (request.status !== 200) {
         alert("Error: " + request.status);

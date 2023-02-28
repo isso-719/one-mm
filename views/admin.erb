@@ -8,23 +8,30 @@
 </head>
 <body>
 
-<button id="reset-btn" onclick="Reset()">最終結果を保存してリセット</button>
+  <input id="mentor-name" type="text" name="mentor-name" placeholder="メンター名">
+  <button id="save-btn" onclick="SaveSpreadSheet()">スプレッドシートに保存</button>
+  <br>
+  <p id="save-success" style="display: none; color: green;">セーブしました</p>
 
-<button id="enable-btn" onclick="Enable()">投票を有効化</button>
-<button id="enable-btn" onclick="Disable()">投票を無効化</button>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-QQ0BMZH5WT"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+  <button id="reset-btn" onclick="Reset()">ブラボーカウントをリセット</button>
+  <br>
 
-    gtag('config', 'G-QQ0BMZH5WT');
-</script>
-<script type="text/javascript" src="/js/button_analytics.js"></script>
+  <button id="enable-btn" onclick="Enable()">投票を有効化</button>
+  <button id="enable-btn" onclick="Disable()">投票を無効化</button>
 
-<script type="text/javascript" src="/js/request.js"></script>
-<script type="text/javascript" src="/js/admin.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QQ0BMZH5WT"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-QQ0BMZH5WT');
+  </script>
+  <script type="text/javascript" src="/js/button_analytics.js"></script>
+
+  <script type="text/javascript" src="/js/request.js"></script>
+  <script type="text/javascript" src="/js/admin.js"></script>
 </body>
 </html>

@@ -3,9 +3,9 @@ Bundler.require
 Dotenv.load
 require 'sinatra/reloader' if development?
 require 'json'
+require 'uri'
+require 'net/http'
 require './src/datastore'
-# TODO: SpreadSheets API の使用
-# require 'google/apis/sheets_v4'
 
 set :bind, '0.0.0.0'
 set :port, ENV['PORT'] || 8080
@@ -93,5 +93,36 @@ end
 # 運営リセットボタン送信先
 post '/api/reset' do
   datastore.reset_counts
+  status 200
+end
+
+# スプレッドシートに記録
+post '/api/save' do
+  mentor_name = params[:mentor_name]
+  bravo_count, not_bravo_count = datastore.get_bravo_count_not_bravo_count
+  count = bravo_count + not_bravo_count
+  if count == 0
+    count = 1
+  end
+  bravo_rate = bravo_count.to_f / count.to_f
+  not_bravo_rate = not_bravo_count.to_f / count.to_f
+
+  uri = URI(ENV['GOOGLE_APP_SCRIPT_DEPLOY_URL'])
+  res = Net::HTTP.post_form(
+    uri,
+    {
+      'service' => 'one-mm-save',
+      'mentor_name' => mentor_name,
+      'bravo_rate' => bravo_rate,
+      'not_bravo_rate' => not_bravo_rate,
+      'bravo_counts' => bravo_count,
+      'not_bravo_counts' => not_bravo_count,
+    },
+  )
+
+  if res.code != "200"
+    status 500
+  end
+
   status 200
 end

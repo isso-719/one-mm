@@ -3,11 +3,11 @@ function Bravo() {
     ButtonAnalytics("bravo");
 
     // Click 時に発火するイベントを記述
-    PostRequest("/api/bravo");
+    PostRequest("/api/bravo", null);
 }
 function NotBravo() {
     // Button Analytics を呼び出す
     ButtonAnalytics("not_bravo");
     // Click 時に発火するイベントを記述
-    PostRequest("/api/not-bravo");
+    PostRequest("/api/not-bravo", null);
 }
