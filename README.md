@@ -8,12 +8,15 @@ Docker-compose で動かす。インストールしてない場合は[ここ](ht
 
 - 起動前準備
 
-まず、本 Web アプリケーションは [Datastore モードの Cloud Firestore](https://console.cloud.google.com/datastore) を使用するため、有効にします。
+まず、本 Web アプリケーションは [Datastore モードの Cloud Firestore](https://console.cloud.google.com/datastore) を使用するため、有効にする。
 
 次に `./credentials` に Google Cloud サービスアカウントの Credentials JSON を配置する。
 
 ```bash
 proj=google-cloud-project-id
+
+gcloud auth login
+gcloud config set project $proj
 
 # gcloud コマンドでサービスアカウントを作成
 gcloud iam service-accounts create one-mm --project $proj
@@ -25,13 +28,13 @@ gcloud projects add-iam-policy-binding $proj --member serviceAccount:one-mm@$pro
 gcloud iam service-accounts keys create ./credentials.json --iam-account one-mm@$proj.iam.gserviceaccount.com
 ```
 
-`.env` ファイルを作成し、以下のように環境変数を設定します。
+`.env` ファイルを作成し、以下のように環境変数を設定する。
 
 ```bash
 GOOGLE_APPLICATION_CREDENTIALS=./credentials.json
 ```
 
-また、スプレッドシートに記録する機能は SpreadSheet および Google Apps Script を使用しているため、以下の手順を行う必要があります。
+また、スプレッドシートに記録する機能は SpreadSheet および Google Apps Script を使用しているため、以下の手順を行う必要がある。
 
 1. スプレッドシートを作成する
 2. スプレッドシートのシート名を `1mm結果` にする
@@ -47,7 +50,7 @@ GOOGLE_APPLICATION_CREDENTIALS=./credentials.json
    7. ウェブアプリの URL が表示されるので、コピーしておく
 6. `.env` ファイルに以下のように環境変数を設定する
 ```bash
-GOOGLE_APP_SCRIPT_DEPLOY_URL==https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec
+GOOGLE_APP_SCRIPT_DEPLOY_URL=https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec
 ```
 
 - 起動
@@ -67,7 +70,7 @@ make stop
 
 ## デプロイ
 
-- 本番環境は Cloud Run を想定し、gcloud コマンドを使用してデプロイします。
+- 本番環境は Cloud Run を想定し、gcloud コマンドを使用してデプロイする。
 
 ```bash
 proj=google-cloud-project-id
@@ -79,7 +82,7 @@ gcloud config set project $proj
 gcloud services enable run.googleapis.com cloudbuild.googleapis.com
 
 # Cloud Run にスプレッドシート記録用の URL を設定
-google_app_script_deploy_url=https://script.google.com/macros/s/AKfycbxAsMtaIdZYV-re25sCEnvr6WZ7Gvl8ngoFWb_VCfUABmXSUe-HRrVGVTZ5iFLfRHMi/exec
+google_app_script_deploy_url=https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec
 
 make deploy GOOGLE_APP_SCRIPT_DEPLOY_URL=$google_app_script_deploy_url 
 ```

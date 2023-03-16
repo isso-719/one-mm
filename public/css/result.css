@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    touch-action: manipulation;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    background-image: url(../img/bg.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* 右下に常駐するロゴ */
+.logo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 20px;
+}
+
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#resChart {
+    width: 600px !important;
+    height: 600px !important;
+}
+
+.chart-left-leg {
+    /*  302px 右へ 移動する */
+    transform: translateX(200px) translateY(-100px);
+    text-align: center;
+    color: #F9C200;
+}
+
+.chart-right-leg {
+    /*  302px 左へ 移動する */
+    transform: translateX(-200px) translateY(-100px);
+    text-align: center;
+    color: #051970;
+}
+
+.chart-leg-img {
+    width: 450px;
+}
+
+.per {
+    font-family: 'Dela Gothic One', cursive;
+    font-size: 120px;
+    background-color: white;
+    border-radius: 80px;
+}

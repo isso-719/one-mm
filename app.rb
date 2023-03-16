@@ -41,6 +41,12 @@ end
 
 # 投票画面
 get '/' do
+  # public/audio/ブラボー* を取得
+  @bravo_audio_files = Dir.glob("public/audio/ブラボー*")
+  @bravo_audio_files.map! { |file| file.gsub("public", "") }
+  # public/audio/Not ブラボー* を取得
+  @not_bravo_audio_files = Dir.glob("public/audio/Notブラボー*")
+  @not_bravo_audio_files.map! { |file| file.gsub("public", "") }
   erb :index
 end
 

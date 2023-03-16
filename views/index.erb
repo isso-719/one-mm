@@ -4,13 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <link rel="stylesheet" href="css/index.css">
+  <title>one-mm</title>
 </head>
 <body>
-  <h1>投票画面</h1>
-
-  <button onClick="Bravo()">Bravo</button>
-  <button onClick="NotBravo()">NotBravo</button>
+  <div class="container">
+    <div class="body">
+        <img class="title" src="img/logo.png" alt="title">
+          <img class="btn" src="img/bravo-btn.png" alt="bravo" onClick="Bravo()">
+          <img class="btn" src="img/not-bravo-btn.png" alt="not-bravo" onClick="NotBravo()">
+    </div>
+  </div>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QQ0BMZH5WT"></script>
@@ -22,8 +26,49 @@
       gtag('config', 'G-QQ0BMZH5WT');
   </script>
   <script type="text/javascript" src="/js/button_analytics.js"></script>
-
   <script type="text/javascript" src="/js/request.js"></script>
-  <script type="text/javascript" src="/js/index.js"></script>
+  <script>
+      // ダブルクリックを無効化
+      document.addEventListener("dblclick", function(e){ e.preventDefault();}, { passive: false });
+
+      let bravoSoundsPath = <%= @bravo_audio_files %> || [];
+      let notBravoSoundsPath = <%= @not_bravo_audio_files %> || [];
+
+      let bravoSounds = [];
+      let notBravoSounds = [];
+
+      for (let i = 0; i < bravoSoundsPath.length; i++) {
+          bravoSounds.push(new Audio(bravoSoundsPath[i]));
+      }
+
+      for (let i = 0; i < notBravoSoundsPath.length; i++) {
+          notBravoSounds.push(new Audio(notBravoSoundsPath[i]));
+      }
+
+      function Bravo() {
+          // Button Analytics を呼び出す
+          ButtonAnalytics("bravo");
+
+          // ランダムで音声を再生する
+          let randomIdx = Math.floor(Math.random() * bravoSoundsPath.length);
+          let audio = bravoSounds[randomIdx];
+          audio.play();
+
+          // Click 時に発火するイベントを記述
+          PostRequest("/api/bravo", null);
+      }
+      function NotBravo() {
+          // Button Analytics を呼び出す
+          ButtonAnalytics("not_bravo");
+
+          // ランダムで音声を再生する
+          let randomIdx = Math.floor(Math.random() * notBravoSoundsPath.length);
+          let audio = notBravoSounds[randomIdx];
+          audio.play();
+
+          // Click 時に発火するイベントを記述
+          PostRequest("/api/not-bravo", null);
+      }
+  </script>
 </body>
 </html>

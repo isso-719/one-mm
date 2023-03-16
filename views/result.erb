@@ -4,18 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <link rel="stylesheet" href="css/result.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>結果確認</title>
 </head>
 <body>
-  <h1>運営リアルタイム監視</h1>
+  <div class="container">
+    <div class="header">
+      <img src="img/res-title.png" alt="title">
+    </div>
+    <div class="body">
+      <div class="chart-left-leg">
+        <img class="chart-leg-img" src="img/bravo-logo.png" alt="bravo">
+        <h2 id="bravo-percentage" class="per">50%</h2>
+      </div>
+      <canvas id="resChart" width="600px" height="600px"></canvas>
+      <div class="chart-right-leg">
+        <img class="chart-leg-img" src="img/not-bravo-logo.png" alt="bravo">
+        <h2 id="not-bravo-percentage" class="per">50%</h2>
+      </div>
+    </div>
+  </div>
 
-  <h2>Bravo!</h2>
-  <p id="bravo-count"></p>
-  <p id="bravo-percentage"></p>
-
-  <h2>Not Bravo!</h2>
-  <p id="not-bravo-count"></p>
-  <p id="not-bravo-percentage"></p>
+  <img class="logo" src="img/logo.png" alt="logo">
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QQ0BMZH5WT"></script>

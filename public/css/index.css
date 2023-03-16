@@ -1,0 +1,50 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    touch-action: manipulation;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    background-image: url(../img/bg.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.title {
+    margin-bottom: 64px;
+}
+
+.btn {
+    width: 291px;
+    max-width: 100vw;
+    margin-bottom: 20px;
+}
+
+/*firstchild*/
+.btn:first-child {
+    margin-bottom: 20px;
+}
+
+/* .btn をタップした時にスケール 0.9 にする、0.2 秒かけて */
+.btn:active {
+    transform: scale(0.9);
+    transition: 0.2s;
+}
