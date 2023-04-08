@@ -80,20 +80,32 @@ post '/api/count-disable' do
   status 200
 end
 
+# カウントが有効かどうかを Fetch するためのエンドポイント
+get '/api/count-available' do
+  content_type :json
+  { availability: datastore.get_enabled }.to_json
+end
+
 # ブラボーボタン送信先
 post '/api/bravo' do
+  play = false
   if datastore.get_enabled
     datastore.increment_count("bravo")
+    play = true
   end
   status 200
+  { play: play }.to_json
 end
 
 # Not ブラボーボタン送信先
 post '/api/not-bravo' do
+  play = false
   if datastore.get_enabled
     datastore.increment_count("not_bravo")
+    play = true
   end
   status 200
+  { play: play }.to_json
 end
 
 # 運営リセットボタン送信先

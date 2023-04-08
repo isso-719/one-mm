@@ -82,7 +82,7 @@ gcloud config set project $proj
 gcloud services enable run.googleapis.com cloudbuild.googleapis.com
 
 # Cloud Run にスプレッドシート記録用の URL を設定
-google_app_script_deploy_url=https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec
+google_app_script_deploy_url=https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec
 
-make deploy GOOGLE_APP_SCRIPT_DEPLOY_URL=$google_app_script_deploy_url 
+make deploy GOOGLE_APP_SCRIPT_DEPLOY_URL=$google_app_script_deploy_url
 ```

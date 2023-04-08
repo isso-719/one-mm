@@ -7,16 +7,28 @@
   <title>admin page</title>
 </head>
 <body>
+  <div>
+    <p style="display: inline;">ブラボー数: </p>
+    <p id="bravo-count" style="display: inline;">0</p>
+  </div>
+  <div>
+    <p style="display: inline;">Notブラボー数: </p>
+    <p id="not-bravo-count" style="display: inline;">0</p>
+  </div>
+
+  <button id="reset-btn" onclick="Reset()">ブラボーカウントをリセット</button>
+
+  <br>
+  <br>
 
   <input id="mentor-name" type="text" name="mentor-name" placeholder="メンター名">
   <button id="save-btn" onclick="SaveSpreadSheet()">スプレッドシートに保存</button>
   <br>
   <p id="save-success" style="display: none; color: green;">セーブしました</p>
 
-
-  <button id="reset-btn" onclick="Reset()">ブラボーカウントをリセット</button>
   <br>
 
+  <p id="count-availability">この表示がずっとされる場合は再読み込みしてください</p>
   <button id="enable-btn" onclick="Enable()">投票を有効化</button>
   <button id="enable-btn" onclick="Disable()">投票を無効化</button>
 
